@@ -1,0 +1,731 @@
+<meta charset="utf-8">
+<title>Kriz Masası</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: beyaz bir yayın stüdyosu. Açılışta kendi kendine yayılan bir paylaşım ağı ve derse geri sayım; altında koyu sahnede dönen kriz radarı, solda senaryo kartları, sağda kriz ibresi; en altta akan gündem ve mühürle onaylanan plan. Tek, açık bir tema: beyaz zemin, bol boşluk. Renkler iki logodan: İKÇÜ kırmızısı, DEOSGB sarısı ve grisi. */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --ink:#26221f; --muted:#6f6862; --line:#ebe6e0; --soft:#f6f3ef;
+  --sun:#ffc914; --coral:#e8412c; --teal:#119c86; --violet:#b3122e; --pink:#ff8a1f; --tang:#f29a1a; --blue:#2f6fde;
+  --on-color:#26221f; --on-dark:#ffffff;
+  --stage:#fbfaf8; --stage-2:#ffffff; --stage-line:#ebe6e0; --stage-text:#26221f;
+  --sun-t:#fff5d1; --red-t:#fce6e9; --teal-t:#ddf3ee; --orange-t:#ffecd9; --blue-t:#e3ecfc;
+  color-scheme:light;
+  --f-display:"Unbounded", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Onest", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:18px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55;margin:0;overflow-x:hidden}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1;letter-spacing:-.01em}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+
+/* ---------- Başlık ---------- */
+.top{background:var(--bg);position:relative;z-index:2}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-block:14px}
+.logos{display:flex;align-items:center;gap:14px;background:#fff;border-radius:16px;padding:8px 14px;border:1px solid var(--line)}
+.logos img{display:block;height:46px;width:auto;max-width:100%}
+.logos .x{font-family:var(--f-display);font-weight:500;color:#9a938c;font-size:18px}
+@media (max-width:520px){.logos img{height:34px}.logos{gap:8px;padding:6px 10px}}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;background:var(--soft);padding:5px;border-radius:999px}
+.tabs a{text-decoration:none;color:var(--muted);padding:8px 16px;border-radius:999px;font-weight:600;font-size:14px}
+.tabs a[aria-current="page"]{background:var(--violet);color:#fff}
+.tabs a:hover:not([aria-current="page"]){color:var(--ink);background:var(--surface)}
+
+/* ---------- Açılış ---------- */
+.opening{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg)}
+#net{position:absolute;inset:0;width:100%;height:100%;display:block}
+.opening .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;padding-block:clamp(36px,6vw,80px) clamp(32px,5vw,64px);align-items:center}
+@media (max-width:900px){.opening .wrap{grid-template-columns:minmax(0,1fr)}}
+.opening .copy{display:grid;gap:18px;justify-items:start}
+.badge{display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(38,34,31,.06)}
+.badge b{background:var(--violet);color:#fff;border-radius:999px;padding:3px 10px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em}
+.opening h2{font-size:clamp(38px,6.6vw,86px);font-weight:900;letter-spacing:-.045em;line-height:.98}
+.opening h2 .w{display:inline-block;animation:rise .8s cubic-bezier(.2,1,.3,1) both}
+.opening h2 .w:nth-child(2){animation-delay:.08s}.opening h2 .w:nth-child(3){animation-delay:.16s}.opening h2 .w:nth-child(4){animation-delay:.24s}.opening h2 .w:nth-child(5){animation-delay:.32s}.opening h2 .w:nth-child(6){animation-delay:.4s}.opening h2 .w:nth-child(7){animation-delay:.48s}
+@keyframes rise{from{transform:translateY(.4em);opacity:0}to{transform:none;opacity:1}}
+.opening h2 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 .06em}
+.opening h2 .red{color:var(--violet)}
+.opening .lead{margin:0;font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:600px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn.big{padding:14px 22px;font-size:15.5px}
+.facts{display:flex;gap:10px 26px;flex-wrap:wrap;margin-top:6px}
+.facts div{display:grid}
+.facts b{font-family:var(--f-display);font-size:28px;font-weight:900;line-height:1}
+.facts span{font-size:13px;color:var(--muted);font-weight:500}
+.countdown{justify-self:end;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:20px 22px;display:grid;gap:12px;box-shadow:0 20px 50px rgba(38,34,31,.10);min-width:0;max-width:440px;width:100%}
+@media (max-width:900px){.countdown{justify-self:start}}
+.countdown .eyebrow{color:var(--violet)}
+.cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cd div{background:var(--soft);border-radius:14px;padding:10px 6px;text-align:center}
+.cd b{display:block;font-family:var(--f-mono);font-weight:700;font-size:clamp(24px,3vw,34px);font-variant-numeric:tabular-nums;line-height:1.1}
+.cd span{font-size:11.5px;color:var(--muted);font-weight:600}
+.countdown p{margin:0;font-size:14px;color:var(--muted)}
+.countdown .where{display:flex;gap:8px;flex-wrap:wrap}
+.countdown .where span{font-size:12.5px;font-weight:600;background:var(--soft);border-radius:8px;padding:4px 9px}
+@media (prefers-reduced-motion:reduce){.opening h2 .w{animation:none}}
+
+.ticker{background:var(--surface);color:var(--ink);border-block:1px solid var(--line);overflow:hidden;display:flex;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.ticker .live{flex:none;background:var(--coral);color:#fff;font-family:var(--f-mono);font-weight:700;font-size:12px;letter-spacing:.1em;padding:9px 14px;display:flex;align-items:center;gap:8px;padding-left:max(14px,env(safe-area-inset-left,0px))}
+.ticker .live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.ticker .track{flex:1;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.ticker .run{display:inline-block;padding-left:100%;animation:run 60s linear infinite;font-size:13.5px;font-weight:500}
+.ticker .run span{margin-right:42px}
+.ticker .run b{color:var(--violet);font-family:var(--f-mono);margin-right:8px}
+@keyframes run{to{transform:translateX(-100%)}}
+.ticker .ai{flex:none;font-family:var(--f-mono);font-size:12px;padding:9px 14px;display:flex;gap:8px;align-items:center;padding-right:max(14px,env(safe-area-inset-right,0px))}
+.ticker .ai i{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.ticker .ai[data-on="1"] i{background:var(--teal);box-shadow:0 0 0 4px rgba(17,156,134,.25)}
+
+main{padding-block:28px 56px}
+section[data-view]{display:grid;gap:22px}
+
+/* ---------- Kahraman ---------- */
+.hero{display:grid;gap:10px;max-width:900px}
+.hero h2{font-size:clamp(30px,5vw,58px);font-weight:900;letter-spacing:-.035em;line-height:1.02}
+.hero h2 .hl{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 .06em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hero h2 .co{color:var(--coral)}
+.hero p{margin:0;font-size:17px;color:var(--muted);max-width:700px}
+
+/* ---------- Sahne ---------- */
+.stage{display:grid;grid-template-columns:300px minmax(0,1fr) 330px;gap:18px;align-items:stretch}
+@media (max-width:1180px){.stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.radarbox{grid-column:1/-1;order:-1}}
+@media (max-width:760px){.stage{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);box-shadow:0 10px 30px rgba(38,34,31,.06);border-radius:var(--r);padding:18px;display:grid;gap:14px;align-content:start;min-width:0;border:1px solid var(--line)}
+.card h3{font-size:17px;font-weight:700}
+.card .head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+.scen{display:grid;gap:10px}
+.scen label{position:relative;display:grid;gap:2px;padding:14px 14px 14px 16px;border-radius:14px;cursor:pointer;background:var(--c,var(--soft));color:var(--on-color);transition:transform .15s ease, box-shadow .15s ease}
+.scen label:hover{transform:translateY(-2px)}
+.scen label:has(input:checked){box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--cc,var(--violet));transform:none}
+.scen input{position:absolute;opacity:0;pointer-events:none}
+.scen label:has(input:focus-visible){outline:3px solid var(--violet);outline-offset:3px}
+.scen strong{font-family:var(--f-display);font-weight:700;font-size:14.5px;line-height:1.2}
+.scen small{font-size:12.5px;font-weight:500;opacity:.8}
+.scen label.custom{background:transparent;border:2px dashed var(--line);color:var(--ink)}
+.scen label.custom small{color:var(--muted);opacity:1}
+.field{display:grid;gap:6px}
+.field label{font-weight:600;font-size:13px}
+.field select,.field textarea{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.field textarea{min-height:100px;resize:vertical}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check input{margin-top:3px;width:18px;height:18px;accent-color:var(--violet);flex:none}
+
+.btn{border:0;background:var(--soft);border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-size:14px;transition:transform .12s ease, filter .12s}
+.btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn.violet{background:var(--violet);color:#fff}
+.btn.coral{background:var(--coral);color:#fff}
+.btn.sun{background:var(--sun);color:var(--on-color)}
+.btn.ghost{background:transparent;border:2px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Radar sahnesi */
+.radarbox{background:radial-gradient(120% 90% at 50% 0%,var(--stage-2),var(--stage));border:1px solid var(--line);box-shadow:0 18px 50px rgba(38,34,31,.08);color:var(--stage-text);border-radius:24px;padding:18px;display:grid;gap:12px;grid-template-rows:auto 1fr auto;min-width:0;position:relative;overflow:hidden}
+.radarbox .top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.clock{font-family:var(--f-mono);font-weight:700;font-size:clamp(40px,6vw,64px);line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.clock small{font-size:14px;letter-spacing:0;opacity:.6;margin-left:6px;font-weight:500}
+.kurum{display:grid;gap:2px;text-align:right;max-width:340px}
+.kurum b{font-family:var(--f-display);font-size:15px}
+.kurum span{font-size:13px;opacity:.7}
+.radarwrap{position:relative;width:100%;max-width:560px;justify-self:center;aspect-ratio:1/1}
+#radar{width:100%;height:100%;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+.play{width:62px;height:62px;border-radius:50%;border:0;background:var(--coral);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 0 0 6px rgba(232,65,44,.25);transition:transform .15s}
+.play:hover{transform:scale(1.06)}
+.play svg{width:24px;height:24px}
+.controls .btn{background:var(--soft);color:var(--ink)}
+.controls .btn[aria-pressed="true"]{background:var(--violet);color:#fff}
+.controls .twist{background:var(--sun);color:#26221f;position:relative}
+.controls .twist:not(:disabled)::after{content:"";position:absolute;inset:-5px;border-radius:999px;border:2px solid var(--sun);animation:ring 1.6s infinite}
+@keyframes ring{from{opacity:.9;transform:scale(.95)}to{opacity:0;transform:scale(1.15)}}
+.progress{height:6px;border-radius:99px;background:var(--soft);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sun),var(--coral));transition:width .4s linear}
+
+/* Kriz ibresi */
+.gauge{position:relative;display:grid;justify-items:center}
+.gauge svg{width:100%;max-width:280px;height:auto;display:block}
+.gauge .needle{transform-origin:150px 150px;transition:transform .9s cubic-bezier(.3,1.5,.5,1)}
+.gauge .num{margin-top:-6px;text-align:center;font-family:var(--f-display);font-weight:900;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+.weather{text-align:center;font-family:var(--f-display);font-weight:700;font-size:17px}
+.weather small{display:block;font-family:var(--f-body);font-weight:500;font-size:13px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kpi{border-radius:14px;padding:10px 12px;color:var(--on-color)}
+.kpi:nth-child(1){background:var(--teal-t)} .kpi:nth-child(2){background:var(--sun-t)} .kpi:nth-child(3){background:var(--red-t)}
+.kpi:nth-child(1) b{color:var(--teal)} .kpi:nth-child(3) b{color:var(--violet)}
+.kpi b{display:block;white-space:nowrap;font-family:var(--f-display);font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi span{font-size:12px;font-weight:600;opacity:.85}
+.kume{display:grid;gap:8px;padding:14px;border-radius:14px;background:var(--soft)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;padding:5px 12px;border-radius:999px;justify-self:start;color:var(--on-color)}
+.pill[data-c="kurban"]{background:var(--teal)}
+.pill[data-c="kaza"]{background:var(--sun)}
+.pill[data-c="onlenebilir"]{background:var(--coral);color:#fff}
+.why{margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--muted);display:grid;gap:3px}
+details.more summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"+ ";color:var(--violet);font-weight:700}
+details.more[open] summary::before{content:"– "}
+details.more p{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+.headline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.strat strong{font-family:var(--f-display);font-size:18px;display:block;margin-bottom:4px}
+.strat p{margin:0;font-size:14px;color:var(--muted)}
+
+/* ---------- Gündem akışı ---------- */
+.feedhead{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.feedhead h3{font-size:clamp(22px,3vw,30px);font-weight:900}
+.feedhead p{margin:0;color:var(--muted);max-width:620px}
+.feed{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:14px}
+.post{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:10px;align-content:start;position:relative;min-width:0}
+.post.fresh{animation:pop .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.85) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.post.twist{background:var(--sun);color:var(--on-color);border-color:transparent}
+.post.twist .who small,.post.twist .foot{color:var(--on-color);opacity:.75}
+.post .row{display:flex;gap:10px;align-items:center}
+.av{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:13px;color:#fff;flex:none}
+.who{display:grid;min-width:0}
+.who b{font-weight:700;font-size:14.5px;line-height:1.25}
+.who small{color:var(--muted);font-size:12.5px}
+.post time{margin-left:auto;font-family:var(--f-mono);font-size:12px;font-weight:700;background:var(--soft);color:var(--ink);padding:3px 8px;border-radius:8px}
+.post p{margin:0;font-size:15px;line-height:1.5}
+.foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--muted)}
+.mood{font-weight:700;font-size:11.5px;padding:3px 9px;border-radius:99px;color:var(--on-color)}
+.mood[data-s="neg"]{background:var(--coral);color:#fff}
+.mood[data-s="mid"]{background:var(--tang)}
+.mood[data-s="pos"]{background:var(--teal)}
+.flag{position:absolute;top:-10px;left:14px;background:var(--coral);color:#fff;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 9px;border-radius:6px}
+.empty{grid-column:1/-1;color:var(--muted);padding:28px;border:2px dashed var(--line);border-radius:var(--r);text-align:center;font-weight:500}
+@media (prefers-reduced-motion:reduce){.post.fresh,.ticker .run,.controls .twist::after,.ticker .live i{animation:none}.gauge .needle,.progress i{transition:none}}
+
+/* ---------- Plan ---------- */
+.planbox{background:var(--surface);border-radius:24px;padding:clamp(18px,3vw,30px);display:grid;gap:18px;border:1px solid var(--line)}
+.planhead{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.planhead h3{font-size:clamp(22px,3vw,30px);font-weight:900;margin-right:auto}
+.toggle{display:inline-flex;background:var(--soft);border-radius:999px;padding:4px}
+.toggle button{border:0;background:transparent;padding:7px 14px;font-size:13px;cursor:pointer;font-weight:700;border-radius:999px}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.status{font-size:14.5px;color:var(--muted);margin:0;display:flex;gap:10px;align-items:center}
+.status.err{color:var(--coral)}
+.status .dots{display:inline-flex;gap:4px}
+.status .dots i{width:7px;height:7px;border-radius:50%;background:var(--violet);animation:bounce 1s infinite}
+.status .dots i:nth-child(2){animation-delay:.15s;background:var(--pink)}
+.status .dots i:nth-child(3){animation-delay:.3s;background:var(--sun)}
+@keyframes bounce{40%{transform:translateY(-6px)}}
+.plan{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.blk{border-radius:var(--r);padding:20px;display:grid;gap:12px;align-content:start;min-width:0;background:var(--surface);border:1px solid var(--line)}
+.blk h4{font-size:16px;font-weight:700;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.blk.statement-blk{grid-column:span 7;background:var(--sun-t);border-color:transparent;position:relative}
+.blk.assess{grid-column:span 5;background:var(--red-t);border-color:transparent}
+
+.blk.qa-blk{grid-column:span 6}
+.blk.plan-blk{grid-column:span 6}
+.blk.lists-blk{grid-column:span 12;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;background:transparent;padding:0}
+.blk.lists-blk>div{border-radius:var(--r);padding:18px}
+.blk.lists-blk>div:first-child{background:var(--teal-t)}
+.blk.lists-blk>div:first-child h4{color:var(--teal)}
+.blk.lists-blk>div:last-child{background:var(--red-t)}
+.blk.lists-blk>div:last-child h4{color:var(--violet)}
+.blk.approve-blk{grid-column:span 12;background:var(--surface);border:2px dashed var(--line);position:relative;overflow:hidden}
+@media (max-width:900px){.plan>.blk{grid-column:1/-1!important}.blk.lists-blk{grid-template-columns:minmax(0,1fr)}}
+.statement-blk h4{justify-content:flex-start;padding-right:84px}
+.statement{white-space:pre-wrap;font-size:16.5px;line-height:1.7;margin:0}
+.statement-blk::before{content:"“";position:absolute;right:20px;top:-6px;font-family:var(--f-display);font-size:120px;line-height:1;color:var(--violet);opacity:.18}
+.statement mark,.qa mark{background:var(--sun);color:#26221f;padding:0 4px;border-radius:4px;font-weight:700}
+.hint{font-size:13px;opacity:.75;margin:0}
+.src{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:6px;font-weight:700}
+.src[data-k="ai"]{background:var(--teal);color:#fff}
+.src[data-k="hazir"]{background:var(--surface);color:var(--muted)}
+.blk.statement-blk .btn{background:var(--surface);color:var(--ink)}
+.qa{display:grid;gap:12px;margin:0}
+.qa dt{font-weight:700}
+.qa dd{margin:3px 0 0;color:var(--muted);font-size:14.5px}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.timeline li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.timeline b{font-family:var(--f-mono);font-size:12px;font-weight:700;background:var(--red-t);color:var(--violet);border-radius:8px;padding:4px 8px;white-space:nowrap}
+.lists-blk ul{margin:8px 0 0;padding-left:18px;display:grid;gap:5px;font-size:14.5px}
+.approve{display:grid;gap:10px}
+.stamp{position:absolute;right:24px;bottom:18px;border:4px solid var(--coral);color:var(--coral);font-family:var(--f-display);font-weight:900;font-size:22px;letter-spacing:.06em;padding:8px 16px;border-radius:10px;transform:rotate(-9deg);pointer-events:none;opacity:0}
+.stamp.on{animation:stamp .45s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stamp{from{opacity:0;transform:rotate(-9deg) scale(2.4)}to{opacity:.92;transform:rotate(-9deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){.stamp.on{animation:none;opacity:.92}}
+@media (max-width:640px){.stamp{position:static;justify-self:start;margin-top:4px}}
+
+/* ---------- Promptlar ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{border:0;background:var(--surface);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700;cursor:pointer;border:2px solid transparent}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.prompts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:16px}
+.pcard{background:var(--surface);border-radius:var(--r);padding:18px;display:grid;gap:12px;align-content:start;min-width:0;border-top:8px solid var(--c,var(--violet))}
+.pcard header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pcard .eyebrow{color:var(--c,var(--violet))}
+.pcard h3{font-size:18px;margin-top:4px}
+.pcard p{margin:0;color:var(--muted);font-size:14px}
+.pcard pre{margin:0;white-space:pre-wrap;font-family:var(--f-mono);font-size:12.5px;line-height:1.6;background:var(--soft);padding:14px;border-radius:12px;max-height:260px;overflow:auto}
+
+/* ---------- Rehber ---------- */
+.guide{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.guide>*{grid-column:span 6;min-width:0}
+.guide>.full{grid-column:1/-1}
+@media (max-width:860px){.guide>*{grid-column:1/-1}}
+.loop{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0;padding:0;list-style:none}
+.loop li{border-radius:999px;padding:10px 16px;font-weight:700;font-size:14.5px;color:var(--on-color)}
+.loop li:nth-child(1){background:var(--teal-t)} .loop li:nth-child(3){background:var(--sun-t)} .loop li:nth-child(7){background:var(--orange-t)} .loop li:nth-child(9){background:var(--blue-t)} .loop li:nth-child(11){background:var(--soft)}
+.loop li.human{background:var(--violet);color:#fff;box-shadow:0 0 0 4px var(--red-t)}
+.loop li.arrow{padding:0;color:var(--muted);font-weight:400}
+.clusters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.clusters{grid-template-columns:minmax(0,1fr)}}
+.cl{border-radius:var(--r);padding:20px;display:grid;gap:8px;align-content:start;color:var(--ink)}
+.cl:nth-child(1){background:var(--teal-t)} .cl:nth-child(2){background:var(--sun-t)} .cl:nth-child(3){background:var(--red-t)}
+.cl:nth-child(1) h4{color:var(--teal)} .cl:nth-child(2) h4{color:#9a6b00} .cl:nth-child(3) h4{color:var(--violet)}
+.cl h4{font-size:20px}
+.cl .eyebrow{opacity:.8}
+.cl p{margin:0;font-size:14.5px}
+.guide ol{margin:0;padding-left:22px;display:grid;gap:8px;font-size:15px}
+.tpl{white-space:pre-wrap;background:var(--soft);padding:16px;border-radius:12px;margin:0;font-size:15px;line-height:1.65}
+.tpl mark{background:var(--sun);color:#26221f;padding:0 4px;border-radius:4px;font-weight:600}
+
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+
+#pdfwrap{position:fixed;left:0;top:0;width:0;height:0;overflow:hidden}
+#pdfdoc{width:760px;background:#fff;color:#111;font-family:var(--f-body);padding:32px;font-size:13px;line-height:1.55}
+#pdfdoc h1{font-family:var(--f-display);font-size:22px;margin:0 0 4px}
+#pdfdoc h2{font-family:var(--f-display);font-size:14px;margin:18px 0 6px;border-bottom:2px solid #ff5a4a;padding-bottom:4px}
+#pdfdoc p,#pdfdoc li{margin:0 0 4px}
+#pdfdoc .muted{color:#555}
+#pdfdoc .box{background:#fff6d6;padding:12px;border-radius:8px;white-space:pre-wrap}
+
+/* ---------- Adımlar ---------- */
+.steps{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;padding-top:6px}
+.steps button{border:0;background:transparent;display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;padding:6px 4px}
+.steps button b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--soft);font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.steps button[aria-current="step"]{color:var(--ink)}
+.steps button[aria-current="step"] b{background:var(--violet);color:#fff;box-shadow:0 0 0 5px var(--red-t)}
+.steps button[data-done="1"] b{background:var(--teal);color:#fff}
+.steps button:disabled{cursor:default;opacity:.55}
+.steps>span{width:clamp(20px,6vw,70px);height:2px;background:var(--line);border-radius:2px}
+.step{display:grid;gap:26px}
+.stephead{text-align:center;display:grid;gap:8px;justify-items:center}
+.stephead h2{font-size:clamp(28px,4vw,46px);font-weight:900;letter-spacing:-.03em}
+.stephead p{margin:0;color:var(--muted);font-size:17px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px}
+.choice{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:10px;align-content:start;padding:24px 22px 22px;border-radius:24px;background:var(--c);position:relative;overflow:hidden;min-height:230px;transition:transform .2s ease, box-shadow .2s ease}
+.choice:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(38,34,31,.12)}
+.choice:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+.choice .ic{width:52px;height:52px;border-radius:16px;background:var(--surface);display:grid;place-items:center;color:var(--cc)}
+.choice .ic svg{width:28px;height:28px}
+.choice h3{font-size:20px;font-weight:700;line-height:1.15;color:var(--ink)}
+.choice p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.45}
+.choice .go{margin-top:auto;font-weight:700;font-size:14px;color:var(--cc)}
+.choice.custom{background:var(--surface);border:2px dashed var(--line)}
+.custombox{max-width:720px;width:100%;justify-self:center;display:grid;gap:10px}
+.custombox label{font-weight:700}
+.custombox textarea{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-height:100px;resize:vertical}
+
+.bar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.bar-t{display:grid;gap:6px;max-width:820px}
+.bar-t h2{font-size:clamp(24px,3.2vw,38px);font-weight:900;letter-spacing:-.025em}
+.bar-t p{margin:0;color:var(--muted);font-size:16px}
+.bar-t .eyebrow{color:var(--violet)}
+
+.desk{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr) minmax(0,290px);gap:28px;align-items:start}
+@media (max-width:1180px){.desk{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.desk .radarbox{grid-column:1/-1;order:-1}}
+@media (max-width:760px){.desk{grid-template-columns:minmax(0,1fr)}}
+.desk h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.col-feed .feed{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;max-height:640px;overflow:auto;padding:2px 4px 2px 0}
+.col-feed .post{padding:12px 14px;gap:6px;border-radius:14px;box-shadow:none}
+.col-feed .post p{font-size:14px}
+.col-feed .av{width:32px;height:32px;border-radius:10px;font-size:11px}
+.col-feed .foot{font-size:12px}
+.radarbox{padding:20px}
+.clockrow{display:flex;align-items:center;gap:16px}
+.clockrow .progress{flex:1}
+.col-gauge{display:grid;gap:16px}
+.gauge{display:grid;justify-items:center;gap:2px}
+.gauge .num{margin-top:-4px}
+.verdict{display:grid;gap:6px;justify-items:start;padding-top:14px;border-top:1px solid var(--line)}
+.verdict strong{font-family:var(--f-display);font-size:19px}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0;padding-top:14px;border-top:1px solid var(--line)}
+.mini div{display:grid;gap:2px}
+.mini dt{font-size:12px;color:var(--muted);font-weight:600}
+.mini dd{margin:0;font-family:var(--f-display);font-weight:700;font-size:18px;white-space:nowrap}
+.settings{display:grid;gap:8px;padding-top:14px;border-top:1px solid var(--line);font-size:14px}
+.settings label[for]{font-size:12px;color:var(--muted);font-weight:600}
+.settings select{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.nextbar{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;padding:22px;border-radius:24px;background:var(--soft)}
+.nextbar p{margin:0;color:var(--muted);font-weight:500}
+.planbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.planbar .status{flex-basis:100%}
+
+/* ---------- Masa kurulumu ---------- */
+.setup{position:fixed;inset:0;z-index:50;background:rgba(255,255,255,.96);display:grid;place-items:center;padding:24px;cursor:pointer}
+.setup-in{display:grid;justify-items:center;gap:10px;text-align:center;max-width:620px}
+.tbl{width:min(520px,90vw);height:auto;overflow:visible}
+.tbl text{font-family:var(--f-body);font-weight:700;font-size:13px;fill:var(--muted);text-anchor:middle}
+.setup .top{transform-box:fill-box;transform-origin:center}
+.setup .seat{transform-box:fill-box;transform-origin:center}
+.setup.go .top{animation:tblIn .55s cubic-bezier(.2,1.3,.4,1) both}
+.setup.go .items{animation:fade .4s .55s both}
+.setup.go .seat{animation:seatIn .5s cubic-bezier(.2,1.2,.4,1) both}
+.setup.go .seat:nth-child(1){animation-delay:.45s}.setup.go .seat:nth-child(2){animation-delay:.55s}.setup.go .seat:nth-child(3){animation-delay:.65s}.setup.go .seat:nth-child(4){animation-delay:.75s}
+.setup.go .seat:nth-child(5){animation-delay:.85s}.setup.go .seat:nth-child(6){animation-delay:.95s}.setup.go .seat:nth-child(7){animation-delay:1.05s}.setup.go .seat:nth-child(8){animation-delay:1.15s}
+.setup .ring{transform-box:fill-box;transform-origin:center;animation:ringPulse 1s 1.2s infinite}
+.setup.done{animation:fadeOut .45s forwards}
+.setup h2{font-size:clamp(26px,4vw,40px);font-weight:900;letter-spacing:-.03em;animation:fade .5s .3s both}
+.setup .eyebrow{color:var(--violet);font-size:12px}
+.setup-sub{margin:0;color:var(--muted)}
+@keyframes tblIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+@keyframes seatIn{from{transform:translate(var(--dx),var(--dy)) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+@keyframes ringPulse{from{transform:scale(1);opacity:1}to{transform:scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.setup *{animation:none!important}}
+.tone{border-radius:12px;padding:10px 14px;font-size:13.5px;display:grid;gap:4px;background:var(--surface)}
+.tone[data-ok="1"]{border-left:4px solid var(--teal)}
+.tone[data-ok="1"] b{color:var(--teal)}
+.tone[data-ok="0"]{border-left:4px solid var(--coral)}
+.tone[data-ok="0"] b{color:var(--coral)}
+.tone span{color:var(--muted)}
+.tone ul{margin:2px 0 0;padding-left:18px;display:grid;gap:3px;color:var(--muted)}
+.tone q{color:var(--ink);font-weight:700}
+.draftsw button{padding:9px 16px;font-size:14px}
+.draftsw button[data-v="taslak"][aria-pressed="true"]{background:var(--coral);color:#fff}
+.draftsw button[data-v="son"][aria-pressed="true"]{background:var(--teal);color:#fff}
+.statement-blk[data-v="taslak"]{background:var(--red-t)}
+.statement-blk[data-v="taslak"] .statement{color:var(--muted)}
+.statement .bad{color:var(--ink);background:none;text-decoration:underline wavy var(--coral);text-decoration-thickness:2px;text-underline-offset:4px;font-weight:600}
+.src[data-k="taslak"]{background:var(--coral);color:#fff}
+@media (max-width:560px){.tabs{width:100%;justify-content:space-between}.tabs a{padding:8px 10px;font-size:13px}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logos" href="#masa" aria-label="Kriz Masası: İzmir Kâtip Çelebi Üniversitesi ve DEOSGB ders konukluğu">
+      <img src="{{LOGO_IKCU}}" alt="İzmir Kâtip Çelebi Üniversitesi" width="300" height="149">
+      <span class="x" aria-hidden="true">×</span>
+      <img src="{{LOGO_DEOSGB}}" alt="DEOSGB Ortak Sağlık ve Güvenlik Birimi" width="861" height="303">
+    </a>
+    <nav class="tabs" aria-label="Bölümler" style="margin-left:auto">
+      <a href="#masa" data-tab="masa">Kriz Masası</a>
+      <a href="#promptlar" data-tab="promptlar">Prompt Kütüphanesi</a>
+      <a href="#rehber" data-tab="rehber">Rehber</a>
+    </nav>
+  </div>
+</header>
+
+<section class="opening" id="opening" aria-labelledby="openTitle">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="copy">
+      <span class="badge"><b>KRİZ MASASI</b>Canlı ders · Halkla İlişkiler ve Reklamcılık</span>
+      <h2 id="openTitle"><span class="w">Kriz</span> <span class="w">başladı.</span> <span class="w hl">İlk</span> <span class="w hl">60</span> <span class="w hl">dakika</span> <span class="w red">senin.</span></h2>
+      <p class="lead">Bir paylaşım dakikalar içinde binlerce kişiye ulaşır. Bugün bir krizi birlikte, dakika dakika yöneteceğiz.</p>
+      <div class="ctas">
+        <a class="btn violet big" href="#masa" id="startCta">Simülasyonu başlat</a>
+        <a class="btn ghost big" href="#promptlar">Prompt kütüphanesi</a>
+      </div>
+      <div class="facts">
+        <div><b>4</b><span>kriz senaryosu</span></div>
+        <div><b>12</b><span>hazır prompt</span></div>
+        <div><b>60</b><span>dakikalık simülasyon</span></div>
+        <div><b>1</b><span>son söz: senin</span></div>
+      </div>
+    </div>
+    <aside class="countdown" aria-live="off">
+      <span class="eyebrow" id="cdLabel">Derse kalan süre</span>
+      <div class="cd" id="cd">
+        <div><b id="cdD">00</b><span>gün</span></div>
+        <div><b id="cdH">00</b><span>saat</span></div>
+        <div><b id="cdM">00</b><span>dakika</span></div>
+        <div><b id="cdS">00</b><span>saniye</span></div>
+      </div>
+      <p><strong style="color:var(--ink)">Kurumsal İletişimde Çevik Yaklaşımlar</strong><br>Konuk: Banu Erkoç, DEOSGB</p>
+      <div class="where"><span>19 Ekim 2026 · 10.00</span><span>İKÇÜ, Çiğli</span></div>
+    </aside>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="live"><i></i>CANLI</div>
+  <div class="track" aria-hidden="true"><div class="run" id="tickerRun"></div></div>
+</div>
+
+<main class="wrap">
+
+<section data-view="masa" id="v-masa">
+  <nav class="steps" aria-label="Adımlar">
+    <button type="button" data-step="secim"><b>1</b>Krizi seç</button>
+    <span aria-hidden="true"></span>
+    <button type="button" data-step="yonet"><b>2</b>Krizi yönet</button>
+    <span aria-hidden="true"></span>
+    <button type="button" data-step="plan"><b>3</b>Planı onayla</button>
+  </nav>
+
+  <div class="step" id="st-secim">
+    <div class="stephead">
+      <h2>Hangi krizi yöneteceğiz?</h2>
+      <p>Bir senaryo seç. Kriz masası kurulur ve saat işlemeye başlar.</p>
+    </div>
+    <div class="choices" id="scenList" role="list"></div>
+  </div>
+
+  <div class="step" id="st-yonet" hidden>
+    <div class="bar">
+      <div class="bar-t">
+        <span class="eyebrow" id="scenEyebrow">Kriz</span>
+        <h2 id="kurumAd"></h2>
+        <p id="scenSummary"></p>
+      </div>
+      <button class="btn ghost" type="button" data-goto="secim">Krizi değiştir</button>
+    </div>
+
+    <div class="desk">
+      <div class="col-feed">
+        <h3>Gündem</h3>
+        <ul class="feed" id="feed" aria-live="polite"></ul>
+      </div>
+
+      <div class="radarbox">
+        <div class="clockrow"><div class="clock" id="clock">T+00<small>dk</small></div><div class="progress" aria-hidden="true"><i id="prog"></i></div></div>
+        <div class="radarwrap"><canvas id="radar" role="img" aria-label="Kriz radarı: her nokta bir paylaşım. Merkeze yakın noktalar kurum için daha olumsuz."></canvas></div>
+        <div class="controls">
+          <button class="btn" id="resetBtn" type="button">Sıfırla</button>
+          <button class="btn" id="speedBtn" type="button" aria-pressed="false">Hız 1×</button>
+          <button class="play" id="playBtn" type="button" aria-label="Başlat"></button>
+          <button class="btn" id="skipBtn" type="button">Sona atla</button>
+          <button class="btn twist" id="twistBtn" type="button">Yeni gelişme!</button>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--coral)"></i>Olumsuz</span>
+          <span><i style="background:var(--tang)"></i>Kararsız</span>
+          <span><i style="background:var(--teal)"></i>Olumlu</span>
+        </div>
+      </div>
+
+      <div class="col-gauge">
+        <h3>Kriz ibresi</h3>
+        <div class="gauge">
+          <svg viewBox="0 0 300 170" aria-hidden="true">
+            <path d="M30 150 A120 120 0 0 1 90 46" fill="none" stroke="var(--teal)" stroke-width="22" stroke-linecap="round"/>
+            <path d="M98 41 A120 120 0 0 1 202 41" fill="none" stroke="var(--sun)" stroke-width="22"/>
+            <path d="M210 46 A120 120 0 0 1 270 150" fill="none" stroke="var(--coral)" stroke-width="22" stroke-linecap="round"/>
+            <g class="needle" id="needle"><path d="M150 150 L146 62 L150 44 L154 62 Z" fill="var(--ink)"/></g>
+            <circle cx="150" cy="150" r="11" fill="var(--ink)"/><circle cx="150" cy="150" r="4" fill="var(--surface)"/>
+          </svg>
+          <div class="num" id="riskNum" aria-label="Risk puanı">0</div>
+          <div class="weather" id="weather">Hafif rüzgâr</div>
+        </div>
+        <div class="verdict">
+          <span class="pill" id="clusterPill" data-c="kaza">Kaza kümesi</span>
+          <span class="eyebrow" style="color:var(--muted)">Önerilen yol</span>
+          <strong id="stratName">–</strong>
+          <details class="more"><summary>Neden?</summary><p id="stratText"></p><ul class="why" id="whyList"></ul></details>
+        </div>
+        <dl class="mini">
+          <div><dt>Paylaşım</dt><dd id="kSig">0</dd></div>
+          <div><dt>Erişim</dt><dd id="kReach">0</dd></div>
+          <div><dt>Olumsuz</dt><dd id="kNeg">%0</dd></div>
+        </dl>
+        <div class="settings">
+          <label for="rep">Kurumun itibarı</label>
+          <select id="rep">
+            <option value="iyi">Güçlü</option>
+            <option value="orta" selected>Orta</option>
+            <option value="zayif">Zayıf</option>
+          </select>
+          <label class="check"><input type="checkbox" id="hist"> Geçmişte benzer kriz var</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="nextbar">
+      <p>Masa hazır olduğunda ilk açıklamayı ve planı çıkar.</p>
+      <button class="btn violet big" type="button" id="toPlan">Aksiyon planını hazırla →</button>
+    </div>
+  </div>
+
+  <div class="step" id="st-plan" hidden>
+    <div class="bar">
+      <div class="bar-t">
+        <span class="eyebrow">Aksiyon planı</span>
+        <h2 id="planTitle"></h2>
+      </div>
+      <div class="btnrow">
+        <button class="btn ghost" type="button" data-goto="yonet">← Masaya dön</button>
+      </div>
+    </div>
+    <div class="planbar">
+      <div class="toggle draftsw" role="group" aria-label="Metin sürümü" id="draftToggle">
+        <button type="button" data-v="taslak" aria-pressed="true">1 · AI'ın ilk taslağı</button>
+        <button type="button" data-v="son" aria-pressed="false">2 · İletişimcinin düzeltmesi</button>
+      </div>
+      <p class="status" id="aiStatus"></p>
+    </div>
+    <div id="planOut" hidden>
+      <div class="plan">
+        <div class="blk statement-blk">
+          <h4>İlk açıklama <span class="src" id="planSource" data-k="hazir">Son hali</span></h4>
+          <p class="statement" id="pStatement"></p>
+          <p class="hint" id="pHint">Sarı alanları sen doldurursun: bunlar doğrulanması gereken bilgiler.</p>
+          <div class="tone" id="tone" aria-live="polite"></div>
+          <div class="btnrow"><button class="btn" type="button" id="copyStatement">Açıklamayı kopyala</button></div>
+        </div>
+        <div class="blk assess">
+          <h4>Masanın yorumu</h4>
+          <div id="pAssess" style="display:grid;gap:10px"></div>
+        </div>
+        <div class="blk qa-blk">
+          <h4>Gazeteci sorarsa</h4>
+          <dl class="qa" id="pQA"></dl>
+        </div>
+        <div class="blk plan-blk">
+          <h4>Saat saat ne yapılır?</h4>
+          <ol class="timeline" id="pPlan"></ol>
+        </div>
+        <div class="blk lists-blk">
+          <div><h4>Yayından önce doğrula</h4><ul id="pVerify"></ul></div>
+          <div><h4>Sakın yapma</h4><ul id="pAvoid"></ul></div>
+        </div>
+        <div class="blk approve-blk">
+          <h4>Son söz senin</h4>
+          <div class="approve" id="approve">
+            <label class="check"><input type="checkbox"> Sarı alanların hepsini gerçek bilgiyle doldurdum ya da kaldırdım.</label>
+            <label class="check"><input type="checkbox"> İzin alınmadan isim, sağlık bilgisi ya da kişisel veri paylaşılmıyor (KVKK).</label>
+            <label class="check"><input type="checkbox"> Metin kurumun sesine uygun; suçlayan ya da savunmacı bir dil yok.</label>
+            <label class="check"><input type="checkbox"> Açıklamayı yetkili kişi okudu ve onayladı.</label>
+          </div>
+          <div class="btnrow">
+            <button class="btn coral" id="pdfBtn" type="button" disabled>Planı PDF olarak indir</button>
+            <button class="btn ghost" id="copyPlan" type="button" disabled>Planın tamamını kopyala</button>
+          </div>
+          <p class="status" id="pdfStatus">Dört kutu da işaretlenince plan indirilebilir.</p>
+          <div class="stamp" id="stamp" aria-hidden="true">YAYINA HAZIR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="setup" id="setup" hidden aria-live="polite">
+  <div class="setup-in">
+    <svg class="tbl" viewBox="0 0 420 280" aria-hidden="true">
+      <g class="seats">
+        <g class="seat" style="--dx:-60px;--dy:-60px"><circle cx="120" cy="52" r="20" fill="var(--violet)"/><text x="120" y="20">Sözcü</text></g>
+        <g class="seat" style="--dx:0px;--dy:-80px"><circle cx="210" cy="44" r="20" fill="var(--sun)"/><text x="210" y="12">Yönetim</text></g>
+        <g class="seat" style="--dx:60px;--dy:-60px"><circle cx="300" cy="52" r="20" fill="var(--teal)"/><text x="300" y="20">Hukuk</text></g>
+        <g class="seat" style="--dx:90px;--dy:0px"><circle cx="372" cy="140" r="20" fill="var(--violet)"/><text x="372" y="182">İSG</text></g>
+        <g class="seat" style="--dx:60px;--dy:60px"><circle cx="300" cy="228" r="20" fill="var(--sun)"/><text x="300" y="270">İK</text></g>
+        <g class="seat" style="--dx:0px;--dy:80px"><circle cx="210" cy="236" r="20" fill="var(--teal)"/><text x="210" y="276">Dijital</text></g>
+        <g class="seat" style="--dx:-60px;--dy:60px"><circle cx="120" cy="228" r="20" fill="var(--violet)"/><text x="120" y="270">Basın</text></g>
+        <g class="seat" style="--dx:-90px;--dy:0px"><circle cx="48" cy="140" r="20" fill="var(--sun)"/><text x="48" y="182">Kalite</text></g>
+      </g>
+      <g class="top">
+        <ellipse cx="210" cy="140" rx="140" ry="76" fill="#f4ede4" stroke="#e2d6c6" stroke-width="3"/>
+        <g class="items">
+          <rect x="150" y="112" width="58" height="40" rx="4" fill="#fff" stroke="#e2d6c6" stroke-width="2" transform="rotate(-8 179 132)"/>
+          <rect x="158" y="122" width="34" height="3" fill="#d9cfc2" transform="rotate(-8 179 132)"/>
+          <rect x="158" y="130" width="40" height="3" fill="#d9cfc2" transform="rotate(-8 179 132)"/>
+          <rect x="158" y="138" width="26" height="3" fill="#d9cfc2" transform="rotate(-8 179 132)"/>
+          <rect x="222" y="116" width="62" height="40" rx="5" fill="#26221f"/>
+          <rect x="227" y="121" width="52" height="28" rx="2" fill="#e8412c"/>
+          <circle class="ring" cx="252" cy="135" r="6" fill="none" stroke="#fff" stroke-width="2"/>
+        </g>
+      </g>
+    </svg>
+    <p class="eyebrow" id="setupEyebrow">Kriz masası kuruluyor</p>
+    <h2 id="setupTitle"></h2>
+    <p class="setup-sub" id="setupSub"></p>
+  </div>
+</div>
+
+<section data-view="promptlar" id="v-promptlar" hidden>
+  <div class="hero">
+    <span class="eyebrow" style="color:var(--violet)">Staj ve ilk iş için</span>
+    <h2>Prompt <span class="hl">kütüphanesi</span></h2>
+    <p>Staj ve ilk işte kullanabileceğin hazır istemler. Köşeli parantezli yerleri doldur, kişisel veri yapıştırma.</p>
+  </div>
+  <div class="filters" id="pFilters" role="group" aria-label="Kategori"></div>
+  <div class="prompts" id="pGrid"></div>
+</section>
+
+<section data-view="rehber" id="v-rehber" hidden>
+  <div class="hero">
+    <span class="eyebrow" style="color:var(--teal)">Masanın arkasındaki model</span>
+    <h2>Kriz <span class="hl">rehberi</span></h2>
+    <p>Masanın krizi nasıl okuduğu, ilk açıklama şablonu ve AI ile çalışmanın kuralları.</p>
+  </div>
+  <div class="guide">
+    <div class="card full">
+      <h3>Çevik iletişim döngüsü</h3>
+      <ul class="loop">
+        <li>Dinle</li><li class="arrow">→</li><li>Taslak çıkar</li><li class="arrow">→</li><li class="human">İnsan kontrol eder</li><li class="arrow">→</li><li>Yayınla</li><li class="arrow">→</li><li>Ölç</li><li class="arrow">→</li><li>Öğren, başa dön</li>
+      </ul>
+      <p style="margin:0;color:var(--muted)">AI, kırmızı çerçeveli adım dışındaki her adımı hızlandırır. Çeviklik hızlı yazmaktan çok döngüyü kısa tutup her turda öğrenmekten gelir.</p>
+    </div>
+    <div class="card full">
+      <h3>Durumsal Kriz İletişimi Teorisi (SCCT)</h3>
+      <p style="margin:0;color:var(--muted)">W. Timothy Coombs'un modeli. Kamuoyu kurumu krizden ne kadar sorumlu tutuyorsa, kurumun cevabı da o kadar çok sorumluluk üstlenmeli.</p>
+      <div class="clusters">
+        <div class="cl"><span class="eyebrow">Zayıf sorumluluk</span><h4>Kurban</h4><p>Doğal afet, söylenti, siber saldırı, ürüne dışarıdan müdahale.</p><p><strong>Yol:</strong> Bilgilendir, ilgi göster; gerekirse söylentiyi kanıtla çürüt.</p></div>
+        <div class="cl"><span class="eyebrow">Düşük sorumluluk</span><h4>Kaza</h4><p>Teknik arızadan doğan kaza ya da ürün sorunu, haksız suçlama.</p><p><strong>Yol:</strong> Olayın kontrol dışı yönünü anlat, düzeltici adımı söyle.</p></div>
+        <div class="cl"><span class="eyebrow">Yüksek sorumluluk</span><h4>Önlenebilir</h4><p>İnsan hatası, ihmal, kurallara aykırı ya da kasıtlı davranış.</p><p><strong>Yol:</strong> Özür dile, sorumluluğu üstlen, telafi et.</p></div>
+      </div>
+      <p style="margin:0;color:var(--muted)"><strong style="color:var(--ink)">Ağırlaştıran etkenler:</strong> Kurumun geçmişinde benzer bir kriz varsa ya da itibarı zaten zayıfsa, kamuoyu krizi bir üst kümedeymiş gibi algılar. Her durumda ilk iş, insanların kendini korumak için bilmesi gerekenleri söylemek ve mağdurlara ilgi göstermektir.</p>
+    </div>
+    <div class="card">
+      <h3>İlk açıklama şablonu</h3>
+      <p class="tpl"><mark>Ne oldu</mark>: doğrulanmış tek cümle. <mark>İnsanlar güvende mi</mark>, şu an durum ne?
+
+<mark>Mağdurlara ilgi</mark>: kimlerle iletişimdeyiz, ne destek veriyoruz?
+
+<mark>Şu an attığımız adım</mark>: durdurduk, inceliyoruz, kurumlarla birlikte çalışıyoruz.
+
+<mark>Bir sonraki bilgi</mark> ne zaman, hangi kanaldan gelecek?</p>
+      <p style="margin:0;color:var(--muted)">Bilmediğin şeyi tahmin etme. "İnceliyoruz, saat 14.00'te yeniden bilgi vereceğiz" demek yanlış bir rakam vermekten iyidir.</p>
+    </div>
+    <div class="card">
+      <h3>İlk 60 dakika</h3>
+      <ol>
+        <li>Kriz ekibini topla, tek bir sözcü belirle.</li>
+        <li>Doğrulanmış bilgiyi doğrulanmamış bilgiden ayır.</li>
+        <li>Önce mağdurlara ve çalışanlara ulaş; haberi basından öğrenmesinler.</li>
+        <li>İlk açıklamayı yayınla: kısa, insani, bir sonraki bilginin saatiyle.</li>
+        <li>Basın sorularına tek kanaldan cevap ver.</li>
+        <li>İzlemeyi bırakma; yeni bilgi gelince planı güncelle.</li>
+      </ol>
+    </div>
+    <div class="card full">
+      <h3>AI ile çalışırken beş kural</h3>
+      <ol>
+        <li><strong>Doğrula.</strong> AI rakam, tarih ve alıntı uydurabilir. Yayına giden her bilginin bir kaynağı olmalı.</li>
+        <li><strong>Veriyi koru.</strong> Müşteri, çalışan ve hasta bilgilerini AI araçlarına yapıştırma. KVKK seni de kurumu da bağlar.</li>
+        <li><strong>Sesi koru.</strong> AI'ın ilk taslağı herkesinkine benzer. Kurumun sesini veren düzeltmeleri sen yaparsın.</li>
+        <li><strong>İmza insanda.</strong> Açıklamanın altında bir kişinin adı var. "AI öyle yazdı" bir savunma değildir.</li>
+        <li><strong>Şeffaf ol.</strong> AI ile üretilen görsel ve içerikleri kurumun ve platformların kurallarına göre belirt.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Kriz Masası · İzmir Katip Çelebi Üniversitesi ders konukluğu, 19 Ekim 2026 · Banu Erkoç</span>
+    <span>Senaryolardaki kurumlar, kişiler ve olaylar kurgusaldır.</span>
+  </div>
+</footer>
+
+<div id="pdfwrap" aria-hidden="true"><div id="pdfdoc"></div></div>
